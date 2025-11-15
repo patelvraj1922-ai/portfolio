@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vraj Patel | Software Developer & Computer Engineer</title>
+    <!-- Load Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons --><script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom styles for the futuristic look */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        :root {
+            --primary-color: #3b82f6; /* Tailwind blue-500 */
+            --accent-color: #2563eb; /* Tailwind blue-600 */
+            --dark-bg: #0f172a; /* Tailwind slate-900 */
+            --mid-bg: #1e293b; /* Tailwind slate-800 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: #e2e8f0; /* Light gray text */
+            scroll-behavior: smooth;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        .nav-link {
+            transition: color 0.3s, transform 0.3s;
+        }
+        .nav-link:hover {
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+        .section-title {
+            position: relative;
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), transparent);
+            border-radius: 9999px;
+        }
+        .card {
+            background-color: var(--mid-bg);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3), 0 4px 6px -4px rgba(59, 130, 246, 0.1);
+        }
+        .btn-primary {
+            background-color: var(--accent-color);
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-color);
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header & Navigation --><header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-sm shadow-xl border-b border-blue-500/10">
+        <nav class="container flex justify-between items-center py-4 px-6 md:px-8">
+            <h1 class="text-2xl font-bold text-white tracking-wider">Vraj<span class="text-blue-500">.patel</span></h1>
+            <div class="hidden md:flex space-x-8 text-sm font-medium">
+                <a href="#hero" class="nav-link text-white hidden data-access-required">Home</a>
+                <a href="#about" class="nav-link text-white hidden data-access-required">About Me</a>
+                <a href="#projects" class="nav-link text-white hidden data-access-required">Projects</a>
+                <a href="#admin" class="nav-link text-white">Admin Portal</a>
+                <a href="#contact" class="nav-link text-white hidden data-access-required">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </nav>
+        <!-- Mobile Menu --><div id="mobile-menu" class="hidden md:hidden bg-slate-800 border-t border-blue-500/20">
+            <a href="#hero" class="block py-3 px-6 text-white hover:bg-slate-700 data-access-required">Home</a>
+            <a href="#about" class="block py-3 px-6 text-white hover:bg-slate-700 data-access-required">About Me</a>
+            <a href="#projects" class="block py-3 px-6 text-white hover:bg-slate-700 data-access-required">Projects</a>
+            <a href="#admin" class="block py-3 px-6 text-white hover:bg-slate-700">Admin Portal</a>
+            <a href="#contact" class="block py-3 px-6 text-white hover:bg-slate-700 data-access-required">Contact</a>
+        </div>
+    </header>
+
+    <main class="py-12">
+        
+        <!-- Welcome/Login Prompt (Default View) --><section id="access-prompt" class="container min-h-[70vh] flex items-center justify-center px-6 md:px-8 text-center">
+            <div class="md:w-1/2 mx-auto card p-10 rounded-xl space-y-4">
+                <h2 class="text-4xl font-extrabold text-white mb-2">Portfolio Access Restricted</h2>
+                <p class="text-lg text-gray-400">
+                    This portfolio content is secured. Please use the Admin Portal below to login and verify your access.
+                </p>
+                <a href="#admin" class="btn-primary inline-flex items-center px-6 py-3 rounded-lg text-white font-semibold">
+                    Go to Admin Portal
+                    <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                </a>
+            </div>
+        </section>
+
+
+        <!-- SECURED CONTENT START: These sections are hidden until successful OTP verification --><div id="secured-content" class="hidden">
+
+            <!-- Hero Section --><section id="hero" class="container min-h-[80vh] flex items-center justify-center px-6 md:px-8 pt-16 pb-20">
+                <div class="text-center">
+                    <!-- IMAGE PATH RETAINED AS vraj_portfolio.jpg, SIZE INCREASED --><img src="vraj_portfolio.jpg" 
+                        onerror="this.onerror=null;this.src='https://placehold.co/180x180/1e293b/3b82f6?text=VRAJ';"
+                        alt="Vraj Patel - Developer Profile Photo"
+                        class="rounded-full w-64 h-64 mx-auto mb-6 border-8 border-blue-500/50 object-cover">
+                    
+                    <p class="text-xl text-blue-400 font-medium mb-3">Hello, I'm</p>
+                    <h2 class="text-6xl md:text-8xl font-extrabold text-white mb-4 leading-tight">Vraj Patel</h2>
+                    <p class="text-2xl md:text-3xl text-gray-300 font-light mb-8">
+                        <span class="text-blue-500 font-semibold">Software Developer</span> & Computer Engineer
+                    </p>
+                    <div class="flex justify-center space-x-4">
+                        <a href="#projects" class="btn-primary px-8 py-3 rounded-lg text-white font-semibold shadow-lg hover:shadow-blue-500/50">
+                            View Projects
+                        </a>
+                        <a href="mailto:patelvraj1922@gmail.com" class="bg-gray-700/50 border border-gray-600 px-8 py-3 rounded-lg text-white font-semibold hover:bg-gray-700 transition duration-300">
+                            Get In Touch
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Section --><section id="about" class="container py-20 px-6 md:px-8">
+                <h3 class="section-title text-3xl font-bold text-white">About Me</h3>
+                
+                <div class="grid md:grid-cols-2 gap-12">
+                    <div>
+                        <p class="text-gray-300 text-lg mb-6 leading-relaxed">
+                            I am a dedicated **Computer Engineer** with a passion for building innovative and scalable software solutions. As a **Software Developer**, I specialize in transforming complex problems into clean, efficient code. My expertise lies in full-stack development, always striving for performance and user-centric design.
+                        </p>
+                        <p class="text-gray-300 text-lg leading-relaxed">
+                            I am committed to continuous learning and contributing meaningfully to ambitious projects. My goal is to leverage technology to create impactful and user-friendly applications.
+                        </p>
+                    </div>
+                    <!-- Contact Info Card (LDRP-ITR added here) --><div class="card p-6 rounded-xl space-y-4">
+                        <h4 class="text-xl font-bold text-blue-400 mb-4 flex items-center">
+                            <i data-lucide="info" class="w-5 h-5 mr-2"></i> Key Details
+                        </h4>
+                        <div class="flex items-center text-gray-300">
+                            <i data-lucide="graduation-cap" class="w-5 h-5 mr-3 text-blue-500"></i>
+                            <span class="font-medium">Running Study:</span> <span class="ml-2">LDRP-ITR, 1st Year</span>
+                        </div>
+                        <div class="flex items-center text-gray-300">
+                            <i data-lucide="mail" class="w-5 h-5 mr-3 text-blue-500"></i>
+                            <span class="font-medium">Email:</span> <a href="mailto:patelvraj1922@gmail.com" class="ml-2 hover:text-blue-400">patelvraj1922@gmail.com</a>
+                        </div>
+                        <div class="flex items-center text-gray-300">
+                            <i data-lucide="phone" class="w-5 h-5 mr-3 text-blue-500"></i>
+                            <span class="font-medium">WhatsApp:</span> <a href="https://wa.me/9023704709" target="_blank" class="ml-2 hover:text-blue-400">+91 9023704709</a>
+                        </div>
+                        <div class="flex items-center text-gray-300">
+                            <i data-lucide="linkedin" class="w-5 h-5 mr-3 text-blue-500"></i>
+                            <span class="font-medium">LinkedIn:</span>
+                            <a href="https://www.linkedin.com/in/vraj-patel-461748374?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" class="ml-2 hover:text-blue-400 truncate">
+                                Vraj Patel Profile
+                            </a>
+                        </div>
+                        <div class="flex items-start text-gray-300">
+                            <i data-lucide="map-pin" class="w-5 h-5 mt-1 mr-3 text-blue-500 flex-shrink-0"></i>
+                            <span class="font-medium">Location:</span> <span class="ml-2">Brahmanwada, Unjha, Mahesana, Gujarat</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projects Section --><section id="projects" class="container py-20 px-6 md:px-8">
+                <h3 class="section-title text-3xl font-bold text-white">Featured Projects</h3>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Project Card: SIH 2025 --><div class="card rounded-xl p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center mb-3">
+                                <i data-lucide="zap" class="w-6 h-6 mr-3 text-blue-500"></i>
+                                <h4 class="text-2xl font-semibold text-white">SIH 2025 Project</h4>
+                            </div>
+                            <p class="text-gray-400 mb-4">
+                                A significant project developed for the Smart India Hackathon (SIH) 2025, demonstrating advanced capabilities in software architecture and implementation.
+                            </p>
+                        </div>
+                        <div class="mt-4">
+                            <span class="inline-block bg-blue-500/20 text-blue-300 text-xs font-semibold px-3 py-1 rounded-full mb-3">Hackathon</span>
+                            <a href="https://pulseai-wb.netlify.app/home" target="_blank" class="flex items-center text-blue-400 hover:text-blue-300 font-medium transition duration-300">
+                                View Live Project
+                                <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Placeholder Project 2 --><div class="card rounded-xl p-6 flex flex-col justify-between opacity-80">
+                        <div>
+                            <div class="flex items-center mb-3">
+                                <i data-lucide="code" class="w-6 h-6 mr-3 text-blue-500"></i>
+                                <h4 class="text-2xl font-semibold text-white">Project Title Placeholder</h4>
+                            </div>
+                            <p class="text-gray-400 mb-4">
+                                Details about a full-stack or specialized project showcasing a key technical skill (e.g., React, Angular, Databases).
+                            </p>
+                        </div>
+                        <div class="mt-4">
+                            <span class="inline-block bg-gray-500/20 text-gray-300 text-xs font-semibold px-3 py-1 rounded-full mb-3">Full Stack</span>
+                            <a href="#" class="flex items-center text-gray-400 font-medium cursor-not-allowed">
+                                Link Coming Soon
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Placeholder Project 3 --><div class="card rounded-xl p-6 flex flex-col justify-between opacity-80">
+                        <div>
+                            <div class="flex items-center mb-3">
+                                <i data-lucide="layers" class="w-6 h-6 mr-3 text-blue-500"></i>
+                                <h4 class="text-2xl font-semibold text-white">Engineering Capstone</h4>
+                            </div>
+                            <p class="text-gray-400 mb-4">
+                                An academic or personal project demonstrating engineering fundamentals and problem-solving abilities.
+                            </p>
+                        </div>
+                        <div class="mt-4">
+                            <span class="inline-block bg-gray-500/20 text-gray-300 text-xs font-semibold px-3 py-1 rounded-full mb-3">Computer Science</span>
+                            <a href="#" class="flex items-center text-gray-400 font-medium cursor-not-allowed">
+                                Link Coming Soon
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-center text-gray-400 mt-12">
+                    Need more information? Feel free to connect with me on <a href="https://www.linkedin.com/in/vraj-patel-461748374?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" class="text-blue-400 hover:underline">LinkedIn</a>.
+                </p>
+            </section>
+
+            <!-- Contact Section --><section id="contact" class="container py-20 px-6 md:px-8">
+                <h3 class="section-title text-3xl font-bold text-white">Contact Vraj</h3>
+                
+                <div class="md:w-2/3 lg:w-1/2 mx-auto card p-8 rounded-xl text-center">
+                    <p class="text-xl text-gray-300 mb-6">
+                        I'm currently available for new opportunities and collaborations. Let's build something great together.
+                    </p>
+                    <a href="mailto:patelvraj1922@gmail.com" class="btn-primary inline-flex items-center px-10 py-4 rounded-lg text-white font-semibold shadow-xl hover:shadow-blue-500/50 text-lg">
+                        <i data-lucide="send" class="w-5 h-5 mr-3"></i>
+                        Send Me An Email
+                    </a>
+                </div>
+            </section>
+
+        </div>
+        <!-- SECURED CONTENT END --><!-- Admin Portal Section --><section id="admin" class="container py-20 px-6 md:px-8">
+            <h3 class="section-title text-3xl font-bold text-white">Admin Portal (Access)</h3>
+            
+            <div id="auth-forms">
+                <!-- 1. Register Card (Default First View) --><div id="register-card" class="card p-6 rounded-xl md:w-1/2 mx-auto">
+                    <h4 class="text-2xl font-bold text-blue-400 mb-4">New User Registration</h4>
+                    <form id="registerForm" class="space-y-4">
+                        <div>
+                            <label for="regEmail" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                            <input type="email" id="regEmail" required class="w-full p-2 rounded-md bg-slate-900 border border-slate-700 text-white focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="regPassword" class="block text-sm font-medium text-gray-300 mb-1">Password</label>
+                            <input type="password" id="regPassword" required class="w-full p-2 rounded-md bg-slate-900 border border-slate-700 text-white focus:border-blue-500">
+                        </div>
+                        <button type="submit" class="btn-primary w-full py-2 rounded-md font-semibold text-white">Register</button>
+                    </form>
+                    <p class="text-center text-sm text-gray-400 mt-4">
+                        Already registered? <button id="showLoginForm" class="text-blue-400 hover:underline font-medium">Click here to Login.</button>
+                    </p>
+                </div>
+
+                <!-- 2. Dynamic Login/OTP Verification Card --><div id="login-otp-card" class="card p-6 rounded-xl md:w-1/2 mx-auto hidden">
+                    <h4 class="text-2xl font-bold text-blue-400 mb-4" id="login-card-title">Login to get OTP</h4>
+                    
+                    <form id="loginOtpForm" class="space-y-4">
+                        
+                        <!-- Email Field (Always visible) --><div>
+                            <label for="loginEmail" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                            <input type="email" id="loginEmail" required class="w-full p-2 rounded-md bg-slate-900 border border-slate-700 text-white focus:border-blue-500">
+                        </div>
+                        
+                        <!-- Password Field (Visible in LOGIN state) --><div id="password-group">
+                            <label for="loginPassword" class="block text-sm font-medium text-gray-300 mb-1">Password</label>
+                            <input type="password" id="loginPassword" required class="w-full p-2 rounded-md bg-slate-900 border border-slate-700 text-white focus:border-blue-500">
+                        </div>
+
+                        <!-- OTP Field (Visible in OTP state) --><div id="otp-group" class="hidden">
+                            <label for="otpCode" class="block text-sm font-medium text-gray-300 mb-1">OTP Code</label>
+                            <input type="text" id="otpCode" required pattern="\d{6}" maxlength="6" class="w-full p-2 rounded-md bg-slate-900 border border-slate-700 text-white focus:border-blue-500">
+                            <p class="text-xs text-gray-400 mt-1">OTP sent to the registered email (check the terminal where 'node server.js' is running).</p>
+                        </div>
+                        
+                        <!-- Buttons --><div id="login-buttons">
+                            <button type="button" id="sendOtpButton" class="btn-primary w-full py-2 rounded-md font-semibold text-white">Login & Send OTP</button>
+                        </div>
+                        <div id="otp-buttons" class="hidden">
+                            <button type="submit" id="verifyOtpButton" class="btn-primary w-full py-2 rounded-md font-semibold text-white">Verify OTP & Grant Access</button>
+                        </div>
+                    </form>
+
+                    <!-- Bottom Nav Links --><div id="login-bottom-nav" class="mt-4 flex justify-between items-center text-sm">
+                        <button id="showRegisterForm" class="text-blue-400 hover:underline font-medium">New user? Register here.</button>
+                    </div>
+                    
+                    <div id="otp-bottom-nav" class="hidden mt-4 flex justify-between items-center text-sm">
+                        <button id="resendOtpButton" class="text-yellow-500 hover:text-yellow-400 transition font-medium">
+                            <i data-lucide="refresh-cw" class="w-4 h-4 mr-1 inline-block"></i> Resend OTP
+                        </button>
+                        <button id="backToLoginButton" class="text-gray-400 hover:underline">
+                            Back to Login
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Message Area --><div id="messageArea" class="mt-8 p-4 rounded-xl hidden md:w-1/2 mx-auto" role="alert"></div>
+
+            <!-- Dashboard Button (Visible after login) --><div id="adminDashboard" class="mt-8 hidden md:w-1/2 mx-auto">
+                <h4 class="text-2xl font-bold text-green-400 mb-4 flex items-center">
+                    <i data-lucide="check-circle" class="w-6 h-6 mr-2"></i> Access Granted
+                </h4>
+                <div class="card p-6 rounded-xl flex justify-between items-center flex-wrap">
+                    <p id="dashboard-message" class="text-gray-300 mb-4 md:mb-0">Your profile content is now available.</p>
+                    <button id="accessDashboard" class="bg-green-600 hover:bg-green-500 px-6 py-2 rounded-lg text-white font-semibold transition duration-300">
+                        Test Admin Access
+                    </button>
+                </div>
+                <button id="logoutButton" class="text-red-400 hover:text-red-300 mt-4 text-sm float-right">Logout</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer --><footer class="bg-slate-800 border-t border-blue-500/10 mt-12">
+        <div class="container py-8 px-6 md:px-8 text-center text-sm text-gray-400">
+            <p class="mb-4">&copy; <span id="current-year"></span> Vraj Patel | Software Developer. All rights reserved.</p>
+            <div class="flex justify-center space-x-6">
+                <a href="https://www.linkedin.com/in/vraj-patel-461748374?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" title="LinkedIn Profile" class="hover:text-blue-400 transition duration-300">
+                    <i data-lucide="linkedin" class="w-5 h-5"></i>
+                </a>
+                <a href="mailto:patelvraj1922@gmail.com" title="Email Vraj" class="hover:text-blue-400 transition duration-300">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                </a>
+                <a href="https://wa.me/9023704709" target="_blank" title="WhatsApp" class="hover:text-blue-400 transition duration-300">
+                    <!-- WhatsApp Icon (using inline SVG as Lucide doesn't have it) --><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12.0003 0C5.37367 0 0 5.37367 0 12C0 14.1557 0.551699 16.2088 1.58352 18.0097L0.000346048 24L6.12151 22.4172C7.88126 23.3283 9.90799 23.8292 12.0003 23.8292C18.6266 23.8292 24 18.4555 24 11.8292C24 8.7077 22.753 5.75306 20.5739 3.57396C18.3948 1.39486 15.4402 0.147858 12.3188 0.147858L12.0003 0ZM18.7303 16.2736C18.6366 16.5168 17.5218 17.0628 17.0253 17.1844C16.5289 17.306 16.0324 17.3668 15.5359 17.3668C15.0394 17.3668 14.2882 17.2033 13.537 16.9202C12.7858 16.6371 11.9644 16.1406 11.143 15.4725C10.3216 14.8045 9.69894 13.9284 9.14175 12.9686C8.58456 12.0087 8.30147 11.049 8.01838 10.0892C7.73528 9.12933 8.01838 8.42398 8.24132 8.13689C8.40487 7.97334 8.77724 7.69025 8.9408 7.5267C9.10435 7.36315 9.2679 7.30238 9.43145 7.30238C9.43145 7.30238 9.595 7.30238 9.75855 7.30238C9.9221 7.30238 10.155 7.30238 10.3779 7.85957C10.6009 8.41676 11.0061 9.33089 11.1697 9.49444C11.3332 9.65799 11.3332 9.88093 11.1697 10.0445C11.0061 10.208 10.8745 10.3396 10.7429 10.4711C10.6114 10.6027 10.4798 10.7077 10.3482 10.8392C10.2166 10.9708 9.98375 11.157 9.75855 11.38C9.53335 11.603 9.3005 11.8861 9.4716 12.1692C9.64269 12.4523 10.155 13.2577 10.9855 14.0792C11.816 14.8045 12.5672 15.0876 12.8503 15.2255C13.1334 15.3634 13.4165 15.3027 13.6747 15.1711C13.9329 15.0396 14.4789 14.8685 14.7371 15.2255C15.0028 15.5825 15.0028 15.7323 15.0028 15.9399C15.0028 16.1475 14.8988 16.2973 14.7352 16.4835C14.5717 16.6696 14.1664 17.0628 13.794 17.4352C13.4217 17.8075 13.0493 18.1802 12.8503 18.2736C12.6514 18.3672 12.5198 18.4558 12.2367 18.6192C11.9536 18.7828 11.4413 18.7828 11.2424 18.7828C11.0435 18.7828 10.8445 18.7828 10.5739 18.7828C10.3032 18.7828 9.87327 18.7828 9.32483 18.6192C8.77638 18.4558 8.01838 18.1727 7.31298 17.567C6.60759 16.9614 6.13075 16.1522 5.86016 15.3308C5.58957 14.5093 5.58957 13.6879 5.86016 12.9686C6.13075 12.2493 6.45784 11.7527 6.78493 11.4069C7.11202 11.0611 7.43912 10.7583 7.74199 10.5947C7.94723 10.4312 8.16335 10.208 8.38629 10.0218C8.50651 9.9169 8.70732 9.68407 8.94015 9.49797C9.17298 9.31187 9.40581 9.15555 9.59203 8.99208L10.0487 8.61962C10.2718 8.44109 10.5284 8.24213 10.8742 8.13689C11.0377 8.08051 11.3332 8.02051 11.5661 8.02051C11.799 8.02051 12.0318 8.02051 12.2647 8.02051C12.4975 8.02051 12.8699 7.97334 13.0688 8.08051C13.2678 8.18768 13.5632 8.37397 13.7591 8.84755C13.955 9.32112 14.0734 10.208 14.0734 10.208C14.0734 10.208 14.0734 10.3942 14.043 10.5804C14.0125 10.7665 13.901 10.9895 13.7901 11.2125C13.6792 11.4354 13.5936 11.6081 13.4831 11.7716C13.3725 11.9351 13.262 12.1643 13.076 12.4038C12.89 12.6433 12.5945 13.0003 12.355 13.2982C12.1154 13.5962 11.8199 13.8941 11.6038 14.1523C11.3877 14.4105 11.1697 14.6335 11.0061 14.7971C10.8426 14.9606 10.7426 15.0802 10.6322 15.2023C10.5212 15.3245 10.3951 15.4373 10.2574 15.5401C10.1197 15.6429 9.87034 15.8239 9.69926 15.9866C9.52818 16.1492 9.2788 16.3268 9.09271 16.4894C8.90661 16.6521 8.7183 16.7901 8.5262 16.9282C8.33409 17.0664 8.09339 17.2045 7.84401 17.3364C7.59463 17.4682 7.31952 17.5975 7.0444 17.7268C6.76928 17.8561 6.3475 18.0662 5.92572 18.2764C5.50395 18.4865 5.04803 18.7303 4.59212 18.9741C4.13620 19.2178 3.59504 19.3907 3.02724 19.5636C2.45943 19.7366 1.86877 19.8664 1.25832 19.9678L1.09477 20.0635C1.0007 20.1233 0.90663 20.1831 0.774983 20.2743L0.663556 20.3701C0.552129 20.4659 0.440702 20.5616 0.334033 20.6534C0.227365 20.7451 0.120696 20.8369 0.0528434 20.9327L-0.015009 21.0284L-0.0828613 21.1242L-0.124209 21.22L-0.165556 21.3157L-0.183756 21.3659L-0.201955 21.4161L-0.201955 21.4663L-0.201955 21.5165L-0.198396 21.6119L-0.183756 21.7073L-0.141641 21.898L-0.10682 22.0886L-0.0828613 22.2285L-0.0828613 22.3683L-0.0828613 22.5082L-0.0919788 22.6989L-0.126799 22.8895L-0.198396 23.2709L-0.245224 23.4615L-0.344422 23.7583L-0.455849 24L0.000346048 24C1.65005 23.8292 3.19349 23.3671 4.5828 22.5804L4.85244 22.378C4.9431 22.3149 5.03376 22.2518 5.12442 22.1887C5.35725 22.0251 5.62784 21.8491 5.92336 21.6731C6.21888 21.4971 6.53907 21.3159 6.88392 21.1399C7.22877 20.9639 7.60460 20.7879 8.01838 20.6243C8.43216 20.4607 8.87513 20.2971 9.35160 20.1507C9.82806 20.0044 10.3340 19.865 10.8742 19.7434C11.4145 19.6218 11.9842 19.5282 12.5539 19.4674C13.1237 19.4067 13.6875 19.3499 14.2380 19.3243C14.7885 19.2987 15.2944 19.2987 15.7503 19.3243C16.2062 19.3499 16.6362 19.3907 17.0253 19.4475C17.4144 19.5043 17.7663 19.5786 18.0619 19.6644C18.3574 19.7502 18.6012 19.8437 18.7971 19.9575C18.9930 20.0713 19.1623 20.1852 19.3005 20.3068C19.4382 20.4284 19.5496 20.5501 19.6580 20.6718C19.7664 20.7934 19.8748 20.9150 19.9654 21.0367C20.0561 21.1583 20.1265 21.2800 20.1762 21.3915C20.2260 21.5030 20.2641 21.6146 20.2796 21.7261C20.2951 21.8377 20.2951 21.9493 20.2951 22.0608C20.2951 22.1724 20.2796 22.2839 20.2443 22.3955L20.1765 22.5594C20.1086 22.7232 20.0195 22.8870 19.9288 23.0507C19.8381 23.2144 19.7475 23.3782 19.6568 23.5420C19.5661 23.7057 19.4755 23.8695 19.4076 24L12.0003 23.8292C18.6266 23.8292 24 18.4555 24 11.8292C24 5.20286 18.6266 -0.170825 12.0003 -0.170825L12.0003 0Z" transform="translate(0 0) scale(1 1) rotate(0 12 12)"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- API Configuration ---
+        const API_BASE_URL = 'http://localhost:3000/api'; 
+        
+        // --- DOM Elements ---
+        const registerForm = document.getElementById('registerForm');
+        const loginOtpForm = document.getElementById('loginOtpForm');
+        const messageArea = document.getElementById('messageArea');
+        const adminDashboard = document.getElementById('adminDashboard');
+        const logoutButton = document.getElementById('logoutButton');
+        const accessDashboard = document.getElementById('accessDashboard');
+        const accessPrompt = document.getElementById('access-prompt');
+        const registerCard = document.getElementById('register-card');
+        const loginOtpCard = document.getElementById('login-otp-card');
+        const securedContent = document.getElementById('secured-content');
+        const navLinks = document.querySelectorAll('.data-access-required');
+        
+        // Dynamic elements within the login/otp card
+        const passwordGroup = document.getElementById('password-group');
+        const otpGroup = document.getElementById('otp-group');
+        const loginButtons = document.getElementById('login-buttons');
+        const otpButtons = document.getElementById('otp-buttons');
+        const showLoginFormButton = document.getElementById('showLoginForm');
+        const showRegisterFormButton = document.getElementById('showRegisterForm');
+        const backToLoginButton = document.getElementById('backToLoginButton');
+        const resendOtpButton = document.getElementById('resendOtpButton');
+        const sendOtpButton = document.getElementById('sendOtpButton');
+        const loginCardTitle = document.getElementById('login-card-title');
+        const loginBottomNav = document.getElementById('login-bottom-nav');
+        const otpBottomNav = document.getElementById('otp-bottom-nav');
+
+
+        // --- Utility Functions ---
+
+        /** Show/Hide Forms based on current state */
+        const showForm = (formId, email = null) => {
+            registerCard.classList.add('hidden');
+            loginOtpCard.classList.add('hidden');
+            messageArea.classList.add('hidden'); // Clear previous messages
+
+            if (formId === 'register') {
+                registerCard.classList.remove('hidden');
+            } else if (formId === 'login') {
+                loginOtpCard.classList.remove('hidden');
+                passwordGroup.classList.remove('hidden');
+                loginButtons.classList.remove('hidden');
+                loginBottomNav.classList.remove('hidden');
+                
+                otpGroup.classList.add('hidden');
+                otpButtons.classList.add('hidden');
+                otpBottomNav.classList.add('hidden');
+
+                loginCardTitle.textContent = 'Login to get OTP';
+                
+                const emailInput = document.getElementById('loginEmail');
+                emailInput.value = email || ''; 
+                emailInput.readOnly = false;
+                emailInput.classList.remove('cursor-not-allowed');
+
+            } else if (formId === 'otp_sent') {
+                loginOtpCard.classList.remove('hidden');
+                passwordGroup.classList.add('hidden');
+                loginButtons.classList.add('hidden');
+                loginBottomNav.classList.add('hidden');
+                
+                otpGroup.classList.remove('hidden');
+                otpButtons.classList.remove('hidden');
+                otpBottomNav.classList.remove('hidden');
+                
+                loginCardTitle.textContent = 'Verify OTP Access';
+                
+                const emailInput = document.getElementById('loginEmail');
+                emailInput.value = email || '';
+                emailInput.readOnly = true;
+                emailInput.classList.add('cursor-not-allowed');
+                document.getElementById('otpCode').value = '';
+            }
+        };
+
+        /** Displays a message in the message area. */
+        const displayMessage = (message, isError = false) => {
+            messageArea.textContent = message;
+            messageArea.classList.remove('hidden', 'bg-red-900/50', 'bg-green-900/50', 'border-red-500', 'border-green-500', 'text-red-300', 'text-green-300');
+            if (isError) {
+                messageArea.classList.add('bg-red-900/50', 'border', 'border-red-500', 'text-red-300');
+            } else {
+                messageArea.classList.add('bg-green-900/50', 'border', 'border-green-500', 'text-green-300');
+            }
+            // Hide after 5 seconds
+            setTimeout(() => {
+                messageArea.classList.add('hidden');
+            }, 5000);
+        };
+
+        /** Checks if a JWT token exists and shows/hides the secured content. */
+        const checkAuthStatus = () => {
+            const token = localStorage.getItem('authToken');
+            
+            if (token) {
+                // Access is Granted
+                accessPrompt.classList.add('hidden');
+                securedContent.classList.remove('hidden');
+                adminDashboard.classList.remove('hidden');
+                
+                // Hide all auth forms
+                registerCard.classList.add('hidden');
+                loginOtpCard.classList.add('hidden');
+                
+                // Show navigation links
+                navLinks.forEach(link => link.classList.remove('hidden'));
+                
+                // Update dashboard message
+                const userEmail = localStorage.getItem('userEmail') || 'User';
+                const userRole = localStorage.getItem('userRole') || 'user';
+                document.getElementById('dashboard-message').textContent = `Access Granted. You are logged in as ${userEmail} (${userRole.toUpperCase()}).`;
+                window.location.href = '#hero'; // Auto-scroll to content
+
+            } else {
+                // Access is Restricted
+                accessPrompt.classList.remove('hidden');
+                securedContent.classList.add('hidden');
+                adminDashboard.classList.add('hidden');
+                
+                // Show default form (Register)
+                showForm('register');
+                
+                // Hide navigation links
+                navLinks.forEach(link => link.classList.add('hidden'));
+
+                // Clear input fields
+                document.getElementById('regEmail').value = '';
+                document.getElementById('regPassword').value = '';
+                document.getElementById('loginPassword').value = '';
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('otpCode').value = '';
+            }
+        };
+
+        /** API Call Utility with simple retry (for stability in local setup). */
+        const fetchWithRetry = async (url, options, retries = 3) => {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || `HTTP error! Status: ${response.status}`);
+                    }
+                    return response;
+                } catch (error) {
+                    if (i === retries - 1) throw error; 
+                    await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1))); // Exponential backoff
+                }
+            }
+        };
+
+        // --- Event Handlers (Form Submissions) ---
+
+        // 1. Register Handler: Saves user and moves to Login
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+
+            try {
+                const response = await fetchWithRetry(`${API_BASE_URL}/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const result = await response.json();
+                
+                displayMessage(result.message);
+                
+                // Move to Login form
+                showForm('login', email); 
+
+            } catch (error) {
+                console.error('Registration Error:', error.message);
+                displayMessage(`Registration failed: ${error.message}`, true);
+                if (error.message.includes('already registered')) {
+                     showForm('login', email);
+                }
+            }
+        });
+
+        // 2. Login Handler: Checks credentials and sends OTP (attached to the button, not the form submit)
+        sendOtpButton.addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) {
+                displayMessage('Please enter both email and password.', true);
+                return;
+            }
+
+            try {
+                const response = await fetchWithRetry(`${API_BASE_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const result = await response.json();
+                
+                displayMessage(result.message);
+                
+                // Move to OTP verification state on the same card
+                showForm('otp_sent', email);
+
+            } catch (error) {
+                console.error('Login Error:', error.message);
+                displayMessage(`Login failed: ${error.message}`, true);
+            }
+        });
+
+        // 3. OTP Verification Handler (attached to the form submit)
+        loginOtpForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Check if we are in the OTP verification phase (by checking if OTP group is visible)
+            if (otpGroup.classList.contains('hidden')) {
+                // If the user clicks enter/submit while still in the Login phase, trigger the login action
+                sendOtpButton.click(); 
+                return;
+            }
+
+            const email = document.getElementById('loginEmail').value;
+            const otp = document.getElementById('otpCode').value;
+
+            try {
+                const response = await fetchWithRetry(`${API_BASE_URL}/verify-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, otp })
+                });
+
+                const result = await response.json();
+                
+                // Store JWT token and user email for UI
+                localStorage.setItem('authToken', result.token);
+                localStorage.setItem('userRole', result.user.role);
+                localStorage.setItem('userEmail', result.user.email);
+
+                displayMessage(result.message);
+                checkAuthStatus(); // Update UI to show secured content
+                
+            } catch (error) {
+                console.error('OTP Verification Error:', error.message);
+                displayMessage(`Verification failed: ${error.message}`, true);
+            }
+        });
+
+        // --- Event Handlers (Navigation & Actions) ---
+
+        // Show Login Form button click
+        showLoginFormButton.addEventListener('click', () => {
+            showForm('login');
+        });
+
+        // Show Register Form button click
+        showRegisterFormButton.addEventListener('click', () => {
+            showForm('register');
+        });
+        
+        // Back to Login button click from OTP screen
+        backToLoginButton.addEventListener('click', () => {
+            const currentEmail = document.getElementById('loginEmail').value;
+            showForm('login', currentEmail);
+        });
+
+        // Resend OTP button click
+        resendOtpButton.addEventListener('click', async () => {
+            const email = document.getElementById('loginEmail').value;
+            if (!email) {
+                displayMessage("Email field is empty. Please go back to login.", true);
+                return;
+            }
+            
+            try {
+                const response = await fetchWithRetry(`${API_BASE_URL}/resend-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+
+                const result = await response.json();
+                displayMessage(result.message);
+
+            } catch (error) {
+                console.error('Resend OTP Error:', error.message);
+                displayMessage(`Resend failed: ${error.message}`, true);
+            }
+        });
+
+
+        logoutButton.addEventListener('click', () => {
+            localStorage.clear(); // Clear all user data
+            displayMessage('You have been logged out. Content is now restricted.');
+            checkAuthStatus(); // Update UI
+            window.location.href = '#admin'; // Scroll to admin section
+        });
+
+        accessDashboard.addEventListener('click', async () => {
+            const token = localStorage.getItem('authToken');
+            const userRole = localStorage.getItem('userRole');
+
+            if (!token) {
+                displayMessage('Login required.', true);
+                return;
+            }
+
+            // Simple check to ensure only 'admin' role tries to access the admin route
+            if (userRole !== 'admin') {
+                displayMessage('Test Failed: Access denied. You do not have admin privileges.', true);
+                return;
+            }
+
+            try {
+                const response = await fetchWithRetry(`${API_BASE_URL}/admin/dashboard`, {
+                    method: 'GET',
+                    headers: { 
+                        'Authorization': `Bearer ${token}` 
+                    }
+                });
+
+                const result = await response.json();
+                displayMessage(`Admin Access SUCCESS! Server Message: ${result.data}`);
+                
+            } catch (error) {
+                console.error('Dashboard Access Error:', error.message);
+                displayMessage(`Admin Access failed: ${error.message}. Check your server logs.`, true);
+            }
+        });
+
+        // --- Initialization ---
+
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Get current year for footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle Logic (and other utilities)
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileNavLinks = mobileMenu.querySelectorAll('a');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            const icon = mobileMenuButton.querySelector('svg');
+            icon.innerHTML = mobileMenu.classList.contains('hidden') 
+                ? lucide.createIcons()['menu'].outerHTML 
+                : lucide.createIcons()['x'].outerHTML;
+        });
+
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileMenuButton.querySelector('svg').innerHTML = lucide.createIcons()['menu'].outerHTML;
+            });
+        });
+        
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId) {
+                    document.querySelector(targetId).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Check authentication status on load
+        checkAuthStatus();
+
+    </script>
+</body>
+</html>
