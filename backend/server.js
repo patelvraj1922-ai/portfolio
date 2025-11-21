@@ -4,11 +4,12 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const otpGenerator = require('otp-generator');
-const nodemailer = require('nodemailer'); // For sending OTP emails
+// const otpGenerator = require('otp-generator'); // REMOVED
+// const nodemailer = require('nodemailer'); // REMOVED
 
 // Environment setup (replace with actual MongoDB URI and secret)
-const MONGODB_URI = 'mongodb+srv://patelvraj1922_db_user:YUELQad0fcexVnsO@vrajpatel.jwmbqiy.mongodb.net/?appName=vrajpatel';
+// Note: User provided the complete URL with 'jwmbqiy' cluster name, but without the database name.
+const MONGODB_URI = 'mongodb+srv://patelvraj1922_db_user:YUELQad0fcexVnsO@vrajpatel.jwmbqiy.mongodb.net/vraj_portfolio?retryWrites=true&w=majority';
 const JWT_SECRET = 'YOUR_SUPER_SECRET_KEY_12345';
 const PORT = process.env.PORT || 3000;
 
@@ -27,34 +28,15 @@ mongoose.connect(MONGODB_URI)
 const UserSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    isVerified: { type: Boolean, default: false }, // OTP verified ho chuka hai ya nahi
-    otp: { type: String }, // OTP store karne ke liye
-    otpExpiry: { type: Date }, // OTP ka samay
+    // OTP fields are removed since OTP is no longer used
     role: { type: String, enum: ['user', 'admin'], default: 'user' }
 });
 
 const User = mongoose.model('User', UserSchema);
 
-// --- Helper Functions ---
-
-// OTP generate aur database mein save karta hai
-const generateAndSendOtp = async (user) => {
-    const otp = otpGenerator.generate(6, { digits: true, lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false });
-    const otpExpiry = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes expiry
-
-    user.otp = otp;
-    user.otpExpiry = otpExpiry;
-    await user.save();
-
-    // NOTE: Yeh asli email nahi bhejta. Yeh sirf terminal mein OTP print karta hai.
-    console.log(`[EMAIL MOCK] New OTP ${otp} sent to ${user.email}`);
-    return otp; 
-};
-
-
 // --- API Routes ---
 
-// 1. Register User (Sirf Email aur Password save hoga)
+// 1. Register User (Email and Password save hoga)
 app.post('/api/register', async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -73,7 +55,7 @@ app.post('/api/register', async (req, res) => {
         await user.save();
 
         res.status(201).json({ 
-            message: 'Registration successful. Please login with your email and password to receive OTP.',
+            message: 'Registration successful. Please login with your email and password.',
             email: user.email
         });
 
@@ -86,7 +68,7 @@ app.post('/api/register', async (req, res) => {
     }
 });
 
-// 2. Login User (OTP generation is part of login)
+// 2. Login User (Directly authenticates with password and returns token)
 app.post('/api/login', async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -101,12 +83,13 @@ app.post('/api/login', async (req, res) => {
             return res.status(401).json({ message: 'Invalid credentials. Password does not match.' });
         }
 
-        // Generate and send OTP upon successful password match
-        await generateAndSendOtp(user);
+        // Authentication successful, generate token
+        const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, { expiresIn: '1d' });
 
         res.json({ 
-            message: 'Login successful. OTP sent to your email (check terminal).',
-            email: user.email 
+            message: 'Login successful. Portfolio access granted.',
+            token, 
+            user: { email: user.email, role: user.role } 
         });
 
     } catch (error) {
@@ -115,58 +98,9 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-// 3. Resend OTP 
-app.post('/api/resend-otp', async (req, res) => {
-    try {
-        const { email } = req.body;
-        const user = await User.findOne({ email });
+// Resend OTP route is removed
 
-        if (!user) {
-            return res.status(404).json({ message: 'User not found.' });
-        }
-        
-        // Generate and send new OTP
-        await generateAndSendOtp(user);
-
-        res.json({ 
-            message: 'New OTP sent to your email (check terminal).',
-            email: user.email 
-        });
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error during OTP resend.' });
-    }
-});
-
-// 4. Verify OTP and Finalize Login
-app.post('/api/verify-otp', async (req, res) => {
-    try {
-        const { email, otp } = req.body;
-        const user = await User.findOne({ email });
-
-        if (!user) return res.status(404).json({ message: 'User not found.' });
-        if (!user.otp || user.otp !== otp) {
-            return res.status(400).json({ message: 'Invalid OTP. Please check the code or resend.' });
-        }
-        if (user.otpExpiry < new Date()) {
-            return res.status(400).json({ message: 'OTP expired. Please use the login page to resend a new OTP.' });
-        }
-        
-        // OTP is valid
-        // user.isVerified = true; // No need to set verified flag, token handles access
-        user.otp = undefined; // OTP hatana
-        user.otpExpiry = undefined; // Expiry time hatana
-        await user.save();
-
-        const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, { expiresIn: '1d' });
-        res.json({ message: 'Login successful. Portfolio access granted.', token, user: { email: user.email, role: user.role } });
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error during OTP verification.' });
-    }
-});
+// Verify OTP route is removed
 
 // Admin Route Example (Requires Authentication Middleware)
 const authenticateToken = (req, res, next) => {
