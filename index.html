@@ -47,12 +47,6 @@
             background: linear-gradient(90deg, var(--primary-color), transparent);
             border-radius: 9999px;
         }
-        .card {
-            background-color: var(--mid-bg);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease-in-out;
-        }
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3), 0 4px 6px -4px rgba(59, 130, 246, 0.1);
@@ -98,7 +92,7 @@
             <div class="md:w-1/2 mx-auto card p-10 rounded-xl space-y-4">
                 <h2 class="text-4xl font-extrabold text-white mb-2">Portfolio Access Restricted</h2>
                 <p class="text-lg text-gray-400">
-                    This portfolio content is secured. Please use the Admin Portal below to login and verify your access.
+                    This portfolio content is secured. Please use the Admin Portal below to login to view.
                 </p>
                 <a href="#admin" class="btn-primary inline-flex items-center px-6 py-3 rounded-lg text-white font-semibold">
                     Go to Admin Portal
@@ -108,11 +102,11 @@
         </section>
 
 
-        <!-- SECURED CONTENT START: These sections are hidden until successful OTP verification --><div id="secured-content" class="hidden">
+        <!-- SECURED CONTENT START: These sections are hidden until successful login --><div id="secured-content" class="hidden">
 
             <!-- Hero Section --><section id="hero" class="container min-h-[80vh] flex items-center justify-center px-6 md:px-8 pt-16 pb-20">
                 <div class="text-center">
-                    <!-- IMAGE PATH RETAINED AS vraj_portfolio.jpg, SIZE INCREASED --><img src="index_photo.jpg" 
+                    <!-- IMAGE PATH RETAINED AS index_photo.jpg --><img src="index_photo.jpg" 
                         onerror="this.onerror=null;this.src='https://placehold.co/180x180/1e293b/3b82f6?text=VRAJ';"
                         alt="Vraj Patel - Developer Profile Photo"
                         class="rounded-full w-64 h-64 mx-auto mb-6 border-8 border-blue-500/50 object-cover">
@@ -277,46 +271,28 @@
                     </p>
                 </div>
 
-                <!-- 2. Dynamic Login/OTP Verification Card --><div id="login-otp-card" class="card p-6 rounded-xl md:w-1/2 mx-auto hidden">
-                    <h4 class="text-2xl font-bold text-blue-400 mb-4" id="login-card-title">Login to get OTP</h4>
+                <!-- 2. Login Card (Direct Login) --><div id="login-otp-card" class="card p-6 rounded-xl md:w-1/2 mx-auto hidden">
+                    <h4 class="text-2xl font-bold text-blue-400 mb-4" id="login-card-title">Login for Access</h4>
                     
-                    <form id="loginOtpForm" class="space-y-4">
+                    <form id="loginForm" class="space-y-4">
                         
                         <!-- Email Field (Always visible) --><div>
                             <label for="loginEmail" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
                             <input type="email" id="loginEmail" required class="w-full p-2 rounded-md bg-slate-900 border border-slate-700 text-white focus:border-blue-500">
                         </div>
                         
-                        <!-- Password Field (Visible in LOGIN state) --><div id="password-group">
+                        <!-- Password Field --><div>
                             <label for="loginPassword" class="block text-sm font-medium text-gray-300 mb-1">Password</label>
                             <input type="password" id="loginPassword" required class="w-full p-2 rounded-md bg-slate-900 border border-slate-700 text-white focus:border-blue-500">
                         </div>
-
-                        <!-- OTP Field (Visible in OTP state) --><div id="otp-group" class="hidden">
-                            <label for="otpCode" class="block text-sm font-medium text-gray-300 mb-1">OTP Code</label>
-                            <input type="text" id="otpCode" required pattern="\d{6}" maxlength="6" class="w-full p-2 rounded-md bg-slate-900 border border-slate-700 text-white focus:border-blue-500">
-                            <p class="text-xs text-gray-400 mt-1">OTP sent to the registered email (check the terminal where 'node server.js' is running).</p>
-                        </div>
                         
                         <!-- Buttons --><div id="login-buttons">
-                            <button type="button" id="sendOtpButton" class="btn-primary w-full py-2 rounded-md font-semibold text-white">Login & Send OTP</button>
-                        </div>
-                        <div id="otp-buttons" class="hidden">
-                            <button type="submit" id="verifyOtpButton" class="btn-primary w-full py-2 rounded-md font-semibold text-white">Verify OTP & Grant Access</button>
+                            <button type="submit" id="directLoginButton" class="btn-primary w-full py-2 rounded-md font-semibold text-white">Login & View Portfolio</button>
                         </div>
                     </form>
 
                     <!-- Bottom Nav Links --><div id="login-bottom-nav" class="mt-4 flex justify-between items-center text-sm">
-                        <button id="showRegisterForm" class="text-blue-400 hover:underline font-medium">New user? Register here.</button>
-                    </div>
-                    
-                    <div id="otp-bottom-nav" class="hidden mt-4 flex justify-between items-center text-sm">
-                        <button id="resendOtpButton" class="text-yellow-500 hover:text-yellow-400 transition font-medium">
-                            <i data-lucide="refresh-cw" class="w-4 h-4 mr-1 inline-block"></i> Resend OTP
-                        </button>
-                        <button id="backToLoginButton" class="text-gray-400 hover:underline">
-                            Back to Login
-                        </button>
+                        <button id="showRegisterFormFromLogin" class="text-blue-400 hover:underline font-medium">New user? Register here.</button>
                     </div>
                 </div>
             </div>
@@ -359,35 +335,26 @@
     </footer>
 
     <script>
-      // --- API Configuration ---
-        const API_BASE_URL = 'https://portfolio-80sv.onrender.com/api';
+        // --- API Configuration ---
+        const API_BASE_URL = 'https://vraj-portfolio-app.onrender.com/api'; // Using Live Render URL
         
         // --- DOM Elements ---
         const registerForm = document.getElementById('registerForm');
-        const loginOtpForm = document.getElementById('loginOtpForm');
+        const loginForm = document.getElementById('loginForm');
         const messageArea = document.getElementById('messageArea');
         const adminDashboard = document.getElementById('adminDashboard');
         const logoutButton = document.getElementById('logoutButton');
         const accessDashboard = document.getElementById('accessDashboard');
         const accessPrompt = document.getElementById('access-prompt');
         const registerCard = document.getElementById('register-card');
-        const loginOtpCard = document.getElementById('login-otp-card');
+        const loginCard = document.getElementById('login-otp-card');
         const securedContent = document.getElementById('secured-content');
         const navLinks = document.querySelectorAll('.data-access-required');
         
-        // Dynamic elements within the login/otp card
-        const passwordGroup = document.getElementById('password-group');
-        const otpGroup = document.getElementById('otp-group');
-        const loginButtons = document.getElementById('login-buttons');
-        const otpButtons = document.getElementById('otp-buttons');
+        // Dynamic elements within the login card
         const showLoginFormButton = document.getElementById('showLoginForm');
-        const showRegisterFormButton = document.getElementById('showRegisterForm');
-        const backToLoginButton = document.getElementById('backToLoginButton');
-        const resendOtpButton = document.getElementById('resendOtpButton');
-        const sendOtpButton = document.getElementById('sendOtpButton');
-        const loginCardTitle = document.getElementById('login-card-title');
-        const loginBottomNav = document.getElementById('login-bottom-nav');
-        const otpBottomNav = document.getElementById('otp-bottom-nav');
+        const showRegisterFormFromLoginButton = document.getElementById('showRegisterFormFromLogin');
+        // Removed OTP specific buttons/fields
 
 
         // --- Utility Functions ---
@@ -395,45 +362,16 @@
         /** Show/Hide Forms based on current state */
         const showForm = (formId, email = null) => {
             registerCard.classList.add('hidden');
-            loginOtpCard.classList.add('hidden');
+            loginCard.classList.add('hidden');
             messageArea.classList.add('hidden'); // Clear previous messages
 
             if (formId === 'register') {
                 registerCard.classList.remove('hidden');
             } else if (formId === 'login') {
-                loginOtpCard.classList.remove('hidden');
-                passwordGroup.classList.remove('hidden');
-                loginButtons.classList.remove('hidden');
-                loginBottomNav.classList.remove('hidden');
-                
-                otpGroup.classList.add('hidden');
-                otpButtons.classList.add('hidden');
-                otpBottomNav.classList.add('hidden');
-
-                loginCardTitle.textContent = 'Login to get OTP';
+                loginCard.classList.remove('hidden');
                 
                 const emailInput = document.getElementById('loginEmail');
                 emailInput.value = email || ''; 
-                emailInput.readOnly = false;
-                emailInput.classList.remove('cursor-not-allowed');
-
-            } else if (formId === 'otp_sent') {
-                loginOtpCard.classList.remove('hidden');
-                passwordGroup.classList.add('hidden');
-                loginButtons.classList.add('hidden');
-                loginBottomNav.classList.add('hidden');
-                
-                otpGroup.classList.remove('hidden');
-                otpButtons.classList.remove('hidden');
-                otpBottomNav.classList.remove('hidden');
-                
-                loginCardTitle.textContent = 'Verify OTP Access';
-                
-                const emailInput = document.getElementById('loginEmail');
-                emailInput.value = email || '';
-                emailInput.readOnly = true;
-                emailInput.classList.add('cursor-not-allowed');
-                document.getElementById('otpCode').value = '';
             }
         };
 
@@ -464,7 +402,7 @@
                 
                 // Hide all auth forms
                 registerCard.classList.add('hidden');
-                loginOtpCard.classList.add('hidden');
+                loginCard.classList.add('hidden');
                 
                 // Show navigation links
                 navLinks.forEach(link => link.classList.remove('hidden'));
@@ -492,7 +430,6 @@
                 document.getElementById('regPassword').value = '';
                 document.getElementById('loginPassword').value = '';
                 document.getElementById('loginEmail').value = '';
-                document.getElementById('otpCode').value = '';
             }
         };
 
@@ -544,8 +481,8 @@
             }
         });
 
-        // 2. Login Handler: Checks credentials and sends OTP (attached to the button, not the form submit)
-        sendOtpButton.addEventListener('click', async (e) => {
+        // 2. Login Handler: Direct Authentication
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const email = document.getElementById('loginEmail').value;
@@ -565,10 +502,13 @@
 
                 const result = await response.json();
                 
-                displayMessage(result.message);
+                // Store JWT token and user details
+                localStorage.setItem('authToken', result.token);
+                localStorage.setItem('userRole', result.user.role);
+                localStorage.setItem('userEmail', result.user.email);
                 
-                // Move to OTP verification state on the same card
-                showForm('otp_sent', email);
+                displayMessage(result.message);
+                checkAuthStatus(); // Update UI to show secured content
 
             } catch (error) {
                 console.error('Login Error:', error.message);
@@ -576,86 +516,18 @@
             }
         });
 
-        // 3. OTP Verification Handler (attached to the form submit)
-        loginOtpForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            // Check if we are in the OTP verification phase (by checking if OTP group is visible)
-            if (otpGroup.classList.contains('hidden')) {
-                // If the user clicks enter/submit while still in the Login phase, trigger the login action
-                sendOtpButton.click(); 
-                return;
-            }
-
-            const email = document.getElementById('loginEmail').value;
-            const otp = document.getElementById('otpCode').value;
-
-            try {
-                const response = await fetchWithRetry(`${API_BASE_URL}/verify-otp`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, otp })
-                });
-
-                const result = await response.json();
-                
-                // Store JWT token and user email for UI
-                localStorage.setItem('authToken', result.token);
-                localStorage.setItem('userRole', result.user.role);
-                localStorage.setItem('userEmail', result.user.email);
-
-                displayMessage(result.message);
-                checkAuthStatus(); // Update UI to show secured content
-                
-            } catch (error) {
-                console.error('OTP Verification Error:', error.message);
-                displayMessage(`Verification failed: ${error.message}`, true);
-            }
-        });
-
         // --- Event Handlers (Navigation & Actions) ---
 
-        // Show Login Form button click
+        // Show Login Form button click (from Register Card)
         showLoginFormButton.addEventListener('click', () => {
             showForm('login');
         });
 
-        // Show Register Form button click
-        showRegisterFormButton.addEventListener('click', () => {
+        // Show Register Form button click (from Login Card)
+        showRegisterFormFromLoginButton.addEventListener('click', () => {
             showForm('register');
         });
         
-        // Back to Login button click from OTP screen
-        backToLoginButton.addEventListener('click', () => {
-            const currentEmail = document.getElementById('loginEmail').value;
-            showForm('login', currentEmail);
-        });
-
-        // Resend OTP button click
-        resendOtpButton.addEventListener('click', async () => {
-            const email = document.getElementById('loginEmail').value;
-            if (!email) {
-                displayMessage("Email field is empty. Please go back to login.", true);
-                return;
-            }
-            
-            try {
-                const response = await fetchWithRetry(`${API_BASE_URL}/resend-otp`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email })
-                });
-
-                const result = await response.json();
-                displayMessage(result.message);
-
-            } catch (error) {
-                console.error('Resend OTP Error:', error.message);
-                displayMessage(`Resend failed: ${error.message}`, true);
-            }
-        });
-
-
         logoutButton.addEventListener('click', () => {
             localStorage.clear(); // Clear all user data
             displayMessage('You have been logged out. Content is now restricted.');
